@@ -358,15 +358,17 @@ class ScriptTask(GeneralBattle, GameUi, SwitchSoul, RealmRaidAssets):
                 x, y, w, h = self.partition[i].roi_back
                 image[y:y+h, x:x+w, ...] = 0
         # -----------------------------------------------------
-        target = self.order_medal.find_anyone(image)
-        if target:
-            center = target.front_center()
-            for i, click in enumerate(self.partition):
-                x1, x2, y1, y2 = click.roi_front[0], click.roi_front[0] + click.roi_front[2], \
-                                 click.roi_front[1], click.roi_front[1] + click.roi_front[3]
-                if x1 < center[0] < x2 and y1 < center[1] < y2:
-                    logger.info(f'Find one medal [{target}], order is {i + 1}')
-                    return target, i + 1
+        # target = self.order_medal.find_anyone(image)
+        targets = self.order_medal.find_all_img(image)
+        for target in targets:
+            if target:
+                center_x, center_y = target
+                for i, click in enumerate(self.partition):
+                    x1, x2, y1, y2 = click.roi_front[0], click.roi_front[0] + click.roi_front[2], \
+                                     click.roi_front[1], click.roi_front[1] + click.roi_front[3]
+                    if x1 < center_x < x2 and y1 < center_y < y2:
+                        logger.info(f'Find one medal [{target}], order is {i + 1}')
+                        return target, i + 1
 
         return None, None
 

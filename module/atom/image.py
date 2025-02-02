@@ -188,7 +188,8 @@ class RuleImage:
             # 得分, x, y, w, h
             x = self.roi_back[0] + pt[0]
             y = self.roi_back[1] + pt[1]
-            matches.append((score, x, y, mat.shape[1], mat.shape[0]))
+            node = (score, x, y, mat.shape[1], mat.shape[0])
+            matches.append(node)
         return matches
 
 
